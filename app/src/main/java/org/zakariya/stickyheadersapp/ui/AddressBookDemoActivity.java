@@ -30,7 +30,7 @@ public class AddressBookDemoActivity extends DemoActivity implements RandomUserL
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		recyclerView.setLayoutManager(new StickyHeaderLayoutManager());
+		recyclerView.setLayoutManager(new StickyHeaderLayoutManager(this));
 		recyclerView.setAdapter(adapter);
 	}
 

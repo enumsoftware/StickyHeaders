@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                             demos,
                             demoModel -> startActivity(new Intent(getActivity(), demoModel.activityClass))));
 
-            StickyHeaderLayoutManager layoutManager = new StickyHeaderLayoutManager();
+            StickyHeaderLayoutManager layoutManager = new StickyHeaderLayoutManager(getContext());
 
             // set a header position callback to set elevation on sticky headers, because why not
             layoutManager.setHeaderPositionChangedCallback((sectionIndex, header, oldPosition, newPosition) -> {

@@ -645,7 +645,7 @@ public class StickyHeaderLayoutManager extends LinearLayoutManager {
 		if (distanceInPixels == 0) {
 			distanceInPixels = (int) Math.abs(firstVisibleChild.getY());
 		}
-
+		
 	}
 
 	private int getEstimatedItemHeightForSmoothScroll(RecyclerView recyclerView) {

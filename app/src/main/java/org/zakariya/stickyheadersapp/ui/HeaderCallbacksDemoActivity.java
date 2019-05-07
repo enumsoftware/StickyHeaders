@@ -21,7 +21,7 @@ public class HeaderCallbacksDemoActivity extends DemoActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		StickyHeaderLayoutManager stickyHeaderLayoutManager = new StickyHeaderLayoutManager();
+		StickyHeaderLayoutManager stickyHeaderLayoutManager = new StickyHeaderLayoutManager(this);
 		recyclerView.setLayoutManager(stickyHeaderLayoutManager);
 
 		// set a header position callback to set elevation on sticky headers, because why not

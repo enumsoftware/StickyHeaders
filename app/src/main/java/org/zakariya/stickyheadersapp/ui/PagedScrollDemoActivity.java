@@ -31,7 +31,7 @@ public class PagedScrollDemoActivity extends DemoActivity implements PagedMockLo
 		loader = new PagedMockLoader(NUM_PAGES);
 		adapter = new PagedDemoAdapter(SHOW_ADAPTER_POSITIONS);
 
-		StickyHeaderLayoutManager layoutManager = new StickyHeaderLayoutManager();
+		StickyHeaderLayoutManager layoutManager = new StickyHeaderLayoutManager(this);
 		recyclerView.setLayoutManager(layoutManager);
 		recyclerView.setAdapter(adapter);
 

@@ -13,7 +13,7 @@ public class StressTestDemoActivity extends DemoActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		recyclerView.setLayoutManager(new StickyHeaderLayoutManager());
+		recyclerView.setLayoutManager(new StickyHeaderLayoutManager(this));
 
 		// this is a really crude emulation of a scenario where the layout manager
 		// has been assigned, but the adapter isn't created and assigned until data is

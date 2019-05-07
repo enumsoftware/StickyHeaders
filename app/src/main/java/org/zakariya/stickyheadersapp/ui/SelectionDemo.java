@@ -36,7 +36,7 @@ public class SelectionDemo extends DemoActivity implements ActionMode.Callback {
 		super.onCreate(savedInstanceState);
 
 		adapter = new SelectionDemoAdapter(1000, 5, SHOW_ADAPTER_POSITIONS);
-		recyclerView.setLayoutManager(new StickyHeaderLayoutManager());
+		recyclerView.setLayoutManager(new StickyHeaderLayoutManager(this));
 		recyclerView.setAdapter(adapter);
 
 		recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
