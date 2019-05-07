@@ -1,7 +1,6 @@
 package org.zakariya.stickyheaders;
 
 import android.content.Context;
-import android.graphics.PointF;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.HashMap;
@@ -449,26 +447,6 @@ public class StickyHeaderLayoutManager extends LinearLayoutManager {
 		return scrolled;
 	}
 
-	@Override
-	public RecyclerView.LayoutParams generateDefaultLayoutParams() {
-		return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-	}
-
-	@Override
-	public boolean canScrollVertically() {
-		return true;
-	}
-
-	@Override
-	public void scrollToPosition(int position) {
-		if (position < 0 || position > getItemCount()) {
-			throw new IndexOutOfBoundsException("adapter position out of range");
-		}
-
-		scrollTargetAdapterPosition = position;
-		pendingSavedState = null;
-		requestLayout();
-	}
 
 	/**
 	 * @param fullyVisibleOnly if true, the search will be limited to the first item not hanging off top of screen or partially obscured by a header
@@ -627,33 +605,6 @@ public class StickyHeaderLayoutManager extends LinearLayoutManager {
 		}
 
 		return bottommostView != null ? getViewViewHolder(bottommostView) : null;
-	}
-
-	@Override
-	public void smoothScrollToPosition(RecyclerView recyclerView, RecyclerView.State state, int position) {
-		if (position < 0 || position > getItemCount()) {
-			throw new IndexOutOfBoundsException("adapter position out of range");
-		}
-
-		pendingSavedState = null;
-
-		// see: https://blog.stylingandroid.com/scrolling-recyclerview-part-3/
-		View firstVisibleChild = recyclerView.getChildAt(0);
-		int itemHeight = getEstimatedItemHeightForSmoothScroll(recyclerView);
-		int currentPosition = recyclerView.getChildAdapterPosition(firstVisibleChild);
-		int distanceInPixels = Math.abs((currentPosition - position) * itemHeight);
-		if (distanceInPixels == 0) {
-			distanceInPixels = (int) Math.abs(firstVisibleChild.getY());
-		}
-		
-	}
-
-	private int getEstimatedItemHeightForSmoothScroll(RecyclerView recyclerView) {
-		int height = 0;
-		for (int i = 0, n = recyclerView.getChildCount(); i < n; i++) {
-			height = Math.max(getDecoratedMeasuredHeight(recyclerView.getChildAt(i)), height);
-		}
-		return height;
 	}
 
 	private void recycleViewsOutOfBounds(RecyclerView.Recycler recycler) {
