@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,7 @@ import java.util.Set;
  */
 
 @SuppressWarnings("unused")
-public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
+public class StickyHeaderLayoutManager extends LinearLayoutManager {
 
 	public enum HeaderPosition {
 		NONE,
@@ -77,7 +78,8 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
 	private SavedState pendingSavedState;
 
 
-	public StickyHeaderLayoutManager() {
+	public StickyHeaderLayoutManager(Context context) {
+		super(context);
 	}
 
 	public HeaderPositionChangedCallback getHeaderPositionChangedCallback() {
@@ -644,10 +646,6 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
 			distanceInPixels = (int) Math.abs(firstVisibleChild.getY());
 		}
 
-		Context context = recyclerView.getContext();
-		SmoothScroller scroller = new SmoothScroller(context, distanceInPixels);
-		scroller.setTargetPosition(position);
-		startSmoothScroll(scroller);
 	}
 
 	private int getEstimatedItemHeightForSmoothScroll(RecyclerView recyclerView) {
@@ -656,16 +654,6 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
 			height = Math.max(getDecoratedMeasuredHeight(recyclerView.getChildAt(i)), height);
 		}
 		return height;
-	}
-
-	private int computeScrollVectorForPosition(int targetPosition) {
-		updateFirstAdapterPosition();
-		if (targetPosition > firstViewAdapterPosition) {
-			return 1;
-		} else if (targetPosition < firstViewAdapterPosition) {
-			return -1;
-		}
-		return 0;
 	}
 
 	private void recycleViewsOutOfBounds(RecyclerView.Recycler recycler) {
@@ -940,33 +928,6 @@ public class StickyHeaderLayoutManager extends RecyclerView.LayoutManager {
 
 	int getViewAdapterPosition(View view) {
 		return getViewViewHolder(view).getAdapterPosition();
-	}
-
-	// https://blog.stylingandroid.com/scrolling-recyclerview-part-3/
-	private class SmoothScroller extends LinearSmoothScroller {
-		private static final int TARGET_SEEK_SCROLL_DISTANCE_PX = 10000;
-		private static final float DEFAULT_DURATION = 1000;
-		private final float distanceInPixels;
-		private final float duration;
-
-		SmoothScroller(Context context, int distanceInPixels) {
-			super(context);
-			this.distanceInPixels = distanceInPixels;
-			float millisecondsPerPx = calculateSpeedPerPixel(context.getResources().getDisplayMetrics());
-			this.duration = distanceInPixels < TARGET_SEEK_SCROLL_DISTANCE_PX ?
-					(int) (Math.abs(distanceInPixels) * millisecondsPerPx) : DEFAULT_DURATION;
-		}
-
-		@Override
-		public PointF computeScrollVectorForPosition(int targetPosition) {
-			return new PointF(0, StickyHeaderLayoutManager.this.computeScrollVectorForPosition(targetPosition));
-		}
-
-		@Override
-		protected int calculateTimeForScrolling(int dx) {
-			float proportion = (float) dx / distanceInPixels;
-			return (int) (duration * proportion);
-		}
 	}
 
 	private static class SavedState implements Parcelable {
